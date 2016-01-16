@@ -18,10 +18,10 @@ class Playlist:
         with open(path, 'w') as playlistout:
             json.dump(playlist, playlistout, indent=4)
 
-    def __init__(self, **kwargs):
-        self.name = kwargs['name']
-        self.repeat = kwargs['repeat']
-        self.shuffle = kwargs['shuffle']
+    def __init__(self, name, repeat=False, shuffle=False):
+        self.name = name
+        self.repeat = repeat
+        self.shuffle = shuffle
         self.playlist1 = []
         self.shuffled = []
         self.song_index = 0
@@ -34,18 +34,22 @@ class Playlist:
         self.playlist1.append(song)
 
     def add_songs(self, songs):
-        for song in self.playlist1:
+        for song in songs:
             self.add_song(song)
 
     def remove_song(self, song):
         self.playlist1.remove(song)
 
     def total_lenght(self):
-        total_lenght = sum([song.length(seconds=True) for song in self.playlist1])
+        total_lenght = sum([song.get_length(seconds=True) for song in self.playlist1])
         return time.strftime('%H:%M:%S', time.gmtime(total_lenght))
 
     def artists(self):
-        return {x.artist: [y.artist for y in self.playlist1.keys()].count(x.artst) for x in self.playlist1.keys()}
+        hist_str = ''
+        artist_hist = {x.artist: [y.artist for y in self.playlist1].count(x.artist) for x in self.playlist1}
+        for k, v in artist_hist.items():
+            hist_str += '{} : \t{}\n'.format(k, v)
+        return hist_str
 
     def next_song(self):
         song = self.playlist1[self.song_index]
@@ -54,9 +58,16 @@ class Playlist:
 
     def pprint_playlist(self):
         songs_tbl = pt(['Artist', 'Song', 'Length'])
+        songs_tbl.align['Artist'] = 'l'
+        songs_tbl.align['Song'] = 'l'
         for i in self.playlist1:
-            pt.add_row([i.get_artist(), i.get_title(), i.get_length()])
-        print(songs_tbl)
+            row = [i.get_artist(), i.get_title(), i.get_length()]
+            songs_tbl.add_row(row)
+        songs_tbl.add_row(['', '', ''])
+        songs_tbl.add_row(['', '', ''])
+        songs_tbl.add_row(['', '---------------------', '------------'])
+        songs_tbl.add_row(['', 'Total Playlist Length', self.total_lenght()])
+        return str(songs_tbl)
 
     def save(self):
         Playlist.save_to_json('./playlist.json', self.playlist1)

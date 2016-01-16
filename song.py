@@ -16,7 +16,7 @@ class Song:
         return '{{0}} - {{1}} from {{2}} - {{3}}'.format(
             self.title, self.artist, self.album, self.lenght)
 
-    def get_lenght(self, seconds=False, minutes=False, hours=False):
+    def get_length(self, seconds=False, minutes=False, hours=False):
         if seconds:
             return self.length
         elif minutes:
