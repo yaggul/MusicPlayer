@@ -40,15 +40,29 @@ class Playlist:
     def remove_song(self, song):
         self.playlist1.remove(song)
 
+    def remove_all_songs(self, songs):
+        for i in range(len(songs)):
+            songs.pop(0)
+
     def total_lenght(self):
         total_lenght = sum([song.get_length(seconds=True) for song in self.playlist1])
-        return time.strftime('%H:%M:%S', time.gmtime(total_lenght))
+        if total_lenght >= 3600:
+            return time.strftime('%H:%M:%S', time.gmtime(total_lenght))
+        else:
+            return time.strftime('%M:%S', time.gmtime(total_lenght))
 
     def artists(self):
         hist_str = ''
         artist_hist = {x.artist: [y.artist for y in self.playlist1].count(x.artist) for x in self.playlist1}
+        longest = 0
         for k, v in artist_hist.items():
-            hist_str += '{} : \t{}\n'.format(k, v)
+            line = k+' '+str(v)
+            if len(line) > longest:
+                longest = len(line)
+            else:
+                pass
+        for k, v in artist_hist.items():
+            hist_str += '{} : {}{}\n'.format(k, (longest - len(k+str(v)))*' ',  v)
         return hist_str
 
     def next_song(self):
@@ -65,14 +79,15 @@ class Playlist:
             songs_tbl.add_row(row)
         songs_tbl.add_row(['', '', ''])
         songs_tbl.add_row(['', '', ''])
-        songs_tbl.add_row(['', '---------------------', '------------'])
-        songs_tbl.add_row(['', 'Total Playlist Length', self.total_lenght()])
+        songs_tbl.add_row(['', '---------------------------', '----------'])
+        songs_tbl.add_row(['', '  Total Playlist Length  ', self.total_lenght()])
         return str(songs_tbl)
 
     def save(self):
-        Playlist.save_to_json('./playlist.json', self.playlist1)
+        Playlist.save_to_json('./playlist.json', [repr(x) for x in self.playlist1])
+        # Playlist.save_to_json('./playlist.json', self.playlist1)
 
     def load(self, path):
         data = Playlist.load_from_json(path)
         for i in range(len(data['Songs'])):
-            self.playlist1[i] = eval(data['Songs'][i])
+            self.playlist1.append(eval(data['Songs'][i]))

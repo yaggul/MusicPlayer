@@ -24,7 +24,10 @@ class Song:
         elif hours:
             return int(time.strftime('%H', time.gmtime(self.length)))
         else:
-            return time.strftime('%H:%M:%S', time.gmtime(self.length))
+            if self.length >= 3600:
+                return time.strftime('%H:%M:%S', time.gmtime(self.length))
+            else:
+                return time.strftime('%M:%S', time.gmtime(self.length))
 
     def get_title(self):
         return self.title
@@ -33,5 +36,5 @@ class Song:
         return self.artist
 
     def __repr__(self):
-        return 'Song({}, {}, {}, {})'.format(
+        return 'Song(title="{}", artist="{}", album="{}", length={})'.format(
             self.title, self.artist, self.album, self.length)
