@@ -32,7 +32,7 @@ def main():
     playlist.remove_all_songs(playlist.playlist1)
     print(playlist.pprint_playlist())
     print('\n')
-    playlist.load(askopenfilename())
+    playlist.load(askopenfilename(title='Please choose playlist file to load'))
     print('\n')
     print(playlist.pprint_playlist())
     print('\n')

@@ -8,13 +8,14 @@ class Song:
         self.artist = kwargs['artist']
         self.album = kwargs['album']
         self.length = kwargs['length']
+        self.path = kwargs['filename']
 
     def __str__(self):
         '''
             {artist} - {title} from {album} - {length}
         '''
         return '{{0}} - {{1}} from {{2}} - {{3}}'.format(
-            self.title, self.artist, self.album, self.lenght)
+            self.title, self.artist, self.album, self.length)
 
     def get_length(self, seconds=False, minutes=False, hours=False):
         if seconds:
@@ -36,5 +37,5 @@ class Song:
         return self.artist
 
     def __repr__(self):
-        return 'Song(title="{}", artist="{}", album="{}", length={})'.format(
-            self.title, self.artist, self.album, self.length)
+        return 'Song(title="{}", artist="{}", album="{}", length={}, filename="{}")'.format(
+            self.title, self.artist, self.album, self.length, self.path)

@@ -18,7 +18,7 @@ class MusicCrawler:
                 songg = mp3(os.path.realpath(os.path.join(self.path, i)))
                 self.songs.append(Song(
                     title=songg['TIT2'][0], artist=songg['TPE1'][0], album=songg[
-                        'TALB'][0], length=round(songg.info.length, 2)))
+                        'TALB'][0], length=round(songg.info.length, 2), filename=songg.filename))
             else:
                 pass
         return self.songs
