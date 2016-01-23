@@ -1,10 +1,10 @@
-from tkinter import Tk
-from tkinter.filedialog import askdirectory
+# from tkinter import Tk
+# from tkinter.filedialog import askdirectory
 import os
 from mutagen.mp3 import MP3 as mp3
 from song import Song
 
-Tk().withdraw()
+# Tk().withdraw()
 
 
 class MusicCrawler:
